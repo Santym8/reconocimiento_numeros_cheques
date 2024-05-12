@@ -21,19 +21,19 @@ def index(request):
                 number = get_number_from_image(number_img)
                 number_result += str(number)
 
-            # Plot each digit in the same figure
+            # # Plot each digit in the same figure
 
-            fig, ax = plt.subplots(1, len(numbers_img), figsize=(12, 12))
-            for i, image in enumerate(numbers_img):
-                ax[i].imshow(image)
-                ax[i].axis("off")
-                # Using model predict
-                number = get_number_from_image(image)
-                ax[i].set_title(f"Digit {number}")
+            # fig, ax = plt.subplots(1, len(numbers_img), figsize=(12, 12))
+            # for i, image in enumerate(numbers_img):
+            #     ax[i].imshow(image)
+            #     ax[i].axis("off")
+            #     # Using model predict
+            #     number = get_number_from_image(image)
+            #     ax[i].set_title(f"Digit {number}")
 
-            plt.tight_layout()
-            plt.savefig("results.png")
-            plt.close()
+            # plt.tight_layout()
+            # plt.savefig("results.png")
+            # plt.close()
 
 
             return render(request, 'index.html', {'form': form, 'image_data_url': image_data_url, 'number_result': number_result})

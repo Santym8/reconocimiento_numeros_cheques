@@ -46,8 +46,8 @@ def extract_digits_img(image_data):
 
     # Convertir a formato OpenCV
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-
-    # original_image = image.copy()
+# 
+    original_image = image.copy()
   
     # cv2.imshow("Original Image", original_image)
     # cv2.waitKey(0)
@@ -69,9 +69,6 @@ def extract_digits_img(image_data):
     digits = extract_digits_and_symbols(roi)
     
 
-
-   
-
     # Display each digit and symbol
     # for i, roi in enumerate(digits):
     #     # cv2.imwrite(f"digit_{i+1}.jpg", roi)
@@ -83,5 +80,3 @@ def extract_digits_img(image_data):
 
     return digits
 
-# image_path = "Cheques/cheque1.jpg"
-# extract_value_area(image_path)

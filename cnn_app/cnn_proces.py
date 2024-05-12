@@ -3,30 +3,32 @@ from PIL import Image
 from .model_loader import model
 import cv2
 
-def get_number_from_image(image_array):
-    image = Image.fromarray(image_array)
+def get_number_from_image(image):
+    if(len(image.shape) == 3):
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    #     Invertir imagen
+    image = cv2.bitwise_not(image)
+    # Cambiar tamaño a 28x28
+    image = cv2.resize(image, (28, 28))
+
+    # Smooth the image
+    image = cv2.GaussianBlur(image, (1, 1), 0)
+
+    image[image < 110] = 0
+    image[image >= 110] = 255
+
+
+    # Normalizar imagen
+    image = image / 255.0
+    image = image.reshape(1, 28, 28, 1)
+
+
+    # Predecir el número
+    prediction = model.predict([image])
+
+    # Obtener el número con mayor probabilidad
+    number = np.argmax(prediction)
+    return number
     
-    if image.mode != 'RGB':
-        image = image.convert('RGB')
 
-
-    image_array = np.array(image)
-    
-    if image_array.shape[0] != 28 or image_array.shape[1] != 28:
-        image = image.resize((28, 28), Image.LANCZOS)
-        image_array = np.array(image)
-
-    gray = np.dot(image_array[..., :3], [0.299, 0.587, 0.114])
-
-    gray = gray.reshape(1, 28, 28, 1) / 255
-
-    # binarize image
-    gray[gray < 0.5] = 0
-    gray[gray >= 0.5] = 1
-
-    # Save image
-    cv2.imwrite("digit.jpg", gray[0] * 255)
-
-    prediction = model.predict(gray)
-
-    return np.argmax(prediction)

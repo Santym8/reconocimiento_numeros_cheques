@@ -7,3 +7,4 @@ pip install scikit-learn==1.3.0
 pip install django-cors-headers
 pip install pillow==9.3.0
 pip install django-bootstrap-v5  
+pip3 install opencv-python

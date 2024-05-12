@@ -1,13 +1,14 @@
 import numpy as np
 from PIL import Image
-import io
 from .model_loader import model
+import cv2
 
-def get_number_from_image(image_data):
-    image = Image.open(io.BytesIO(image_data))
+def get_number_from_image(image_array):
+    image = Image.fromarray(image_array)
     
     if image.mode != 'RGB':
         image = image.convert('RGB')
+
 
     image_array = np.array(image)
     
@@ -19,5 +20,13 @@ def get_number_from_image(image_data):
 
     gray = gray.reshape(1, 28, 28, 1) / 255
 
+    # binarize image
+    gray[gray < 0.5] = 0
+    gray[gray >= 0.5] = 1
+
+    # Save image
+    cv2.imwrite("digit.jpg", gray[0] * 255)
+
     prediction = model.predict(gray)
+
     return np.argmax(prediction)
